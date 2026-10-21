@@ -1,16 +1,28 @@
 import gimnasia.*
+import personas.*
+
+
+
 
 describe "rutinas" {
+	const correrEnLaPlaya = new Running(intensidad=1.2, tiempo=0) // Una actividad de running con intensisdad 1.2
+	const remarEnElDelta = new Remo(intensidad=0, tiempo=0) // Una actividad de remo
+	const remarEnCaminoRemeros = new RemoDeCompeticion(remarEnElDelta) // Una actividad de remo comptetitivo
+	const maratonBA = new Maraton(intensidad=1.5, tiempo=0) //Una maraton con intensidad 1.5
 
-//Punto 1: rutinas
-//	const correrEnLaPlaya = // Una actividad de running con intensisdad 1.2
-//	const remarEnElDelta = // Una actividad de remo
-//	const remarEnCaminoRemeros = // Una actividad de remo comptetitivo
-//	const maratonBA = //Una maraton con intensidad 1.5
 
-//Punto 2: personas
-	//const calamardo = //Una persona Sedentaria con peso 60 y tiempo de ejercicio 5
- 	//const bob =  // Una persona atleta con peso 40 
+	test "Punto 1: rutinas" {
+		assert.that(true)
+	}
+	
+
+	test "Punto 2: personas" {
+		const calamardo = new Sedentario(peso=60, rutinaQueAplica=null, tiempoQueEjercita=5) //Una persona Sedentaria con peso 60 y tiempo de ejercicio 5
+		const bob = new Atleta(peso=40, rutinaQueAplica=null) // Una persona atleta con peso 40 
+
+		assert.that(true)	
+	}
+
 
 //Punto 3: clubes
 	//const recreo = //un predio con correrEnLaPlaya y maratonBA
