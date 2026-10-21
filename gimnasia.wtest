@@ -57,7 +57,7 @@ describe "rutinas" {
 	const remarEnCaminoRemeros = new RemoDeCompeticion() // Una actividad de remo comptetitivo
 	const maratonBA = new Maraton(intensidad=1.5) //Una maraton con intensidad 1.5
 	const calamardo = new Sedentario(peso=60, tiempoQueEjercita=5) //Una persona Sedentaria con peso 60 y tiempo de ejercicio 5
-	const bob = new Atleta(peso=40, tiempoQueEjercita=0) // Una persona atleta con peso 40 
+	const bob = new Atleta(peso=40) // Una persona atleta con peso 40 
 	const recreo = new Predio(rutinas=#{correrEnLaPlaya, maratonBA})//un predio con correrEnLaPlaya y maratonBA
 	const nautico = new Predio(rutinas=#{remarEnElDelta, remarEnCaminoRemeros})//un predio con remarEnElDelta y remarEnCaminoRemeros
 	const clubBarrial = new Club(predios=#{recreo, nautico})//un club con recreo y nautico
@@ -92,72 +92,69 @@ describe "rutinas" {
 	// Ej: 1.2345.truncate(3) -> devuelve 1.234 
 	
 	test '2.1.1 test sedentario running' {
-		calamardo.aplicarRutinaPor(correrEnLaPlaya, correrEnLaPlaya.tiempo())// hacer que calamardo practique correrEnLaPlaya
+		calamardo.aplicarRutina(correrEnLaPlaya)// hacer que calamardo practique correrEnLaPlaya
 		assert.equals(59.948, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.948 (truncado a 3 decimales)
 	} 
 	
 	test '2.1.2 test sedentario maraton' {
-		// hacer que calamardo practique maratonBA
-		// el peso de calamardo debería ser 59.871 (truncado a 3 decimales)
-		assert.that(true)
+		calamardo.aplicarRutina(maratonBA)// hacer que calamardo practique maratonBA
+		assert.equals(59.871, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.871 (truncado a 3 decimales)
 	} 
 
 	test '2.1.3 test sedentario remo' {
-		// hacer que calamardo practique remarEnElDelta
-		// el peso de calamardo debería ser 59.925 (truncado a 3 decimales)
-		assert.that(true)
+		calamardo.aplicarRutina(remarEnElDelta)// hacer que calamardo practique remarEnElDelta
+		assert.equals(59.925, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.925 (truncado a 3 decimales)
 	} 
 
 	test '2.1.3 test sedentario remo competicion' {
-		// hacer que calamardo practique remarEnCaminoRemeros
-		// el peso de calamardo debería ser 59.927 (truncado a 3 decimales)
-		assert.that(true)
+		calamardo.aplicarRutina(remarEnCaminoRemeros)// hacer que calamardo practique remarEnCaminoRemeros
+		assert.equals(59.927, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.927 (truncado a 3 decimales)
 	} 
 	
 	test '2.1.5 test sedentario no puede practicar' {
-		// Hacer que el peso de calamardo sea 40
-		// hacer que calamardo practique correrEnLaPlaya (NO SE PUEDE!)
-		// el peso de calamardo debería ser 40 
-		assert.that(true)
+		calamardo.peso(40)// Hacer que el peso de calamardo sea 40
+		assert.throwsException({calamardo.aplicarRutina(correrEnLaPlaya)})// hacer que calamardo practique correrEnLaPlaya (NO SE PUEDE!)
+		assert.equals(40, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 40 
 	} 
 
 	test "2.2.1 test atleta running" {
-		// hacer que bob practique correrEnLaPlaya
-		// el peso de bob debería ser 39.725 (truncado a 3 decimales)
-		assert.that(true)
+		bob.aplicarRutina(correrEnLaPlaya)// hacer que bob practique correrEnLaPlaya
+		assert.equals(39.725, (bob.peso()).truncate(3))// el peso de bob debería ser 39.725 (truncado a 3 decimales)
 	}
 
 	test "2.2.2 test atleta maraton" {
-		// hacer que bob practique maratonBA
-		// el peso de bob debería ser 37.812 (truncado a 3 decimales)
-		assert.that(true)
+		bob.aplicarRutina(maratonBA)// hacer que bob practique maratonBA
+		assert.equals(37.812, (bob.peso()).truncate(3))// el peso de bob debería ser 37.812 (truncado a 3 decimales)
 	}
 
 	test "2.2.3 test atleta remo" {
-		// hacer que bob practique remarEnElDelta( NO SE PUEDE!)
-		// el peso de bob debería ser 40 
-		assert.that(true)
+		assert.throwsException({bob.aplicarRutina(remarEnElDelta)})// hacer que bob practique remarEnElDelta( NO SE PUEDE!)
+		assert.equals(40, (bob.peso()).truncate(3))// el peso de bob debería ser 40 
 	}
 
 	test "2.2.3 test atleta remo de competición" {
-		// hacer que bob practique remarEnCaminoRemeros
-		// el peso de bob debería ser 39.406
-		assert.that(true)
+		bob.aplicarRutina(remarEnCaminoRemeros)// hacer que bob practique remarEnCaminoRemeros
+		assert.equals(39.406, (bob.peso()).truncate(3))// el peso de bob debería ser 39.406
 	}
 
 
+
+
 //punto 3: Consultas
-	test "3.1 el mejor predio" {
+//	test "3.1 el mejor predio" {
+	test "a" {
 		assert.equals(recreo, clubBarrial.mejorPredioPara(bob))//El mejor predio del clubBarrial para bob debería ser recreo		
 		assert.equals(recreo, clubBarrial.mejorPredioPara(calamardo))//El mejor predio del clubBarrial para calamardo debería ser recreo
 	}	
 	
-	test "3.2 predios tranquis" {
+//	test "3.2 predios tranquis" {
+	test "b" {
 		assert.throwsException({clubBarrial.prediosTranquisPara(bob)})//No debería haber predios tranquis en el clubBarrial para bob
 		assert.equals(recreo, clubBarrial.prediosTranquisPara(calamardo))//Los predios tranquis del clubBarrial para calamardo solo incluyen a recreo  
 	}
 	
-	test "3.3 rutinas más exigentes" {
+//	test "3.3 rutinas más exigentes" {
+	test "c" {
 		assert.equals(#{maratonBA, remarEnCaminoRemeros}, clubBarrial.rutinasMasExigentesPara(bob))//Las rutinas más exigentes del clubBarrial para bob son maratonBA y remarEnCaminoRemeros
 		assert.equals(#{maratonBA, remarEnElDelta}, clubBarrial.rutinasMasExigentesPara(calamardo))//Las rutinas más exigentes del clubBarrial para calamardo son maratonBA y remarEnElDelta
 	}

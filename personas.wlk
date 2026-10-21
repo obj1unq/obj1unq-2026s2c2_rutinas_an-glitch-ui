@@ -3,42 +3,47 @@ import gimnasia.*
 class Persona {
     //var property rutinaQueAplica  
     var property peso
-    const property tiempoQueEjercita
 
 
-    method pesoQuePierde(r, t) = r.caloriasQueSeConsumen(t) / self.caloriasPorKilo()
+    method pesoQuePierde(r) = r.caloriasQueSeConsumen(self.tiempoQueEjercita()) / self.caloriasPorKilo()
 
     method caloriasPorKilo()
 
-    method aplicarRutinaPor(r, t) {
-        self.validarSiPuedeAplicarRutina(r, t)
-        r.tiempo(tiempoQueEjercita)
-        peso = peso - self.pesoQuePierde(r, t)
+    method aplicarRutina(r) {
+        self.validarSiPuedeAplicarRutina(r)
+        peso = peso - self.pesoQuePierde(r)
     }
 
-    method validarSiPuedeAplicarRutina(r, t) {
-        if(!self.puedeAplicarRutina(r, t)){
+    method validarSiPuedeAplicarRutina(r) {
+        if(!self.puedeAplicarRutina(r)){
             self.error("No puede aplicar la rutina")
         }
     }
 
-    method puedeAplicarRutina(r, t) 
+    method puedeAplicarRutina(r) 
+
+    method tiempoQueEjercita()
 }
 
 
 
 class Sedentario inherits Persona {
+    const tiempoQueEjercita = 0
+
+
     override method caloriasPorKilo() = 7000
 
-    override method puedeAplicarRutina(r, t) = peso>50
+    override method puedeAplicarRutina(r) = peso>50
+
+    override method tiempoQueEjercita() = tiempoQueEjercita
 }
 
 class Atleta inherits Persona {
     override method tiempoQueEjercita() = 90
 
-    override method pesoQuePierde(r, t) = super(r, t)-1
+    override method pesoQuePierde(r) = super(r)-1
 
     override method caloriasPorKilo() = 8000
 
-    override method puedeAplicarRutina(r, t) = r.caloriasQueSeConsumen(t)>10000
+    override method puedeAplicarRutina(r) = r.caloriasQueSeConsumen(self.tiempoQueEjercita())>10000
 }
