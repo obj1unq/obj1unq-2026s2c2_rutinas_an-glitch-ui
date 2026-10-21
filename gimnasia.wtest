@@ -1,108 +1,161 @@
+import club.*
 import gimnasia.*
+import personas.*
 
+
+
+/*
+Casos de prueba:
+Running:
+-Al practicarse por 5 minutos consumirá 100 * (5 -2) * 1.2 = 360
+-Al practicarse por 90 minutos consumirá 100 * (90-5) * 1.2 = 10200
+
+Maraton:
+-Al practicarse por 5 minutos consumirá (100 * (5 -2) * 1.5) * 2 = 900
+-Al practicarse por 90 minutos consumirá (100 * (90-5) * 1.5) * 2 = 25500
+
+Remo:
+-Al practicarse por 5 minutos quemará 100 * (5 - (5 /5)) * 1.3 = 520
+-Al practicarse por 90 minutos quemará 100 * (90 - (90/5)) * 1.3 = 9360
+
+RemoDeCompeticion:
+-Al practicarse por 5 minutos quemará 100 * (5 - 2) * 1.7 = 510
+-Al practicarse por 90 minutos quemará 100 * (90 - ((90/5) - 3) ) * 1.7 = 12750
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Casos de prueba:
+Personas sedentarias:
+-Correr en la playa: 60 - (360/7000) = 59.948
+-Correr la Maraton de BA: 60 - (900/7000) = 59.871
+-Remar en el delta: 60 - (520/7000) = 59.925
+-Remar en el camino de los remeros: 60 - (510/7000) = 59.927
+
+Personas atletas:
+-Correr en la playa: 40 - ((10200/8000) - 1) = 39.725
+-Correr la Maraton de BA: 40 - ((25500/8000) - 1) = 37.812
+-Remar en el delta: No se puede porque las calorías de esta rutina es menor a 10000, el peso se mantiene en 40
+-Remar en el camino de los remeros: 40 - ((12750/8000) - 1) = 39.406 
+--Nota: Todos los resultados estan truncados a 3 decimales. usar miNumero.truncate(3) en los tests
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+Casos de prueba:
+El club barrial tiene dos predios. El náutico, desde dónde se puede remar en el delta y en el camino de los remeros, y el recreo, dónde se puede correr por la playa y correr la maratón de buenos aires.
+
+El mejor predio del club barrial para bob es el recreo. Ya que le hace gastar 35700 mientras que náutico le hace gastar 22110
+El mejor predio del club barrial para calamardo es el recreo. Ya que le hace gastar 1260 mientras que náutico le hace gastar 1030
+Para bob no hay predios tranquis en el club barrial,
+
+Para calamardo, el conjunto de predios tranquis solo tiene a el recreo, ya que ahí puede correr por la playa gastando solo 360 calorías
+-para bob las rutinas más exigentes del club barrial son la maratón de buenos aires y remar en el camino de los remeros.
+-para calamardo las rutinas más exigentes del club barrial son la maratón de buenos aires y remar en el delta.
+*/
 describe "rutinas" {
+	const correrEnLaPlaya = new Running(intensidad=1.2) // Una actividad de running con intensisdad 1.2
+	const remarEnElDelta = new Remo() // Una actividad de remo
+	const remarEnCaminoRemeros = new RemoDeCompeticion() // Una actividad de remo comptetitivo
+	const maratonBA = new Maraton(intensidad=1.5) //Una maraton con intensidad 1.5
+	const calamardo = new Sedentario(peso=60, tiempoQueEjercita=5) //Una persona Sedentaria con peso 60 y tiempo de ejercicio 5
+	const bob = new Atleta(peso=40) // Una persona atleta con peso 40 
+	const recreo = new Predio(rutinas=#{correrEnLaPlaya, maratonBA})//un predio con correrEnLaPlaya y maratonBA
+	const nautico = new Predio(rutinas=#{remarEnElDelta, remarEnCaminoRemeros})//un predio con remarEnElDelta y remarEnCaminoRemeros
+	const clubBarrial = new Club(predios=#{recreo, nautico})//un club con recreo y nautico
 
-//Punto 1: rutinas
-//	const correrEnLaPlaya = // Una actividad de running con intensisdad 1.2
-//	const remarEnElDelta = // Una actividad de remo
-//	const remarEnCaminoRemeros = // Una actividad de remo comptetitivo
-//	const maratonBA = //Una maraton con intensidad 1.5
 
-//Punto 2: personas
-	//const calamardo = //Una persona Sedentaria con peso 60 y tiempo de ejercicio 5
- 	//const bob =  // Una persona atleta con peso 40 
 
-//Punto 3: clubes
-	//const recreo = //un predio con correrEnLaPlaya y maratonBA
-	//const nautico = //un predio con remarEnElDelta y remarEnCaminoRemeros
-	//const clubBarrial = //un club con recreo y nautico
-//	
-//
 // PUNTO 1
-//	test "1.1 consulta running" {
-//		//correrEnLaPlaya deberia gastar 360 calorias al practicarse por 5 minutos
-//		//correrEnLaPlaya deberia gastar 10200 calorias al practicarse por 90 minutos
-//	}
+	test "1.1 consulta running" {
+		assert.equals(10200, correrEnLaPlaya.caloriasQueSeConsumen(90))//correrEnLaPlaya deberia gastar 10200 calorias al practicarse por 90 minutos
+		assert.equals(360, correrEnLaPlaya.caloriasQueSeConsumen(5))//correrEnLaPlaya deberia gastar 360 calorias al practicarse por 5 minutos
+	}
 
-//	test "1.2 consulta maraton" {
-//		//maratonBA deberia gastar 900 calorias al practicarse por 5 minutos
-//		//maratonBA deberia gastar 25500 calorias al practicarse por 90 minutos
-//	}
+	test "1.2 consulta maraton" {
+		assert.equals(900, maratonBA.caloriasQueSeConsumen(5))//maratonBA deberia gastar 900 calorias al practicarse por 5 minutos
+		assert.equals(25500, maratonBA.caloriasQueSeConsumen(90))//maratonBA deberia gastar 25500 calorias al practicarse por 90 minutos
+	}
 
-//	test "1.3 consulta remo" {
-//		//remarEnElDelta deberia gastar 520 calorias al practicarse por 5 minutos
-//		//remarEnElDelta deberia gastar 9360 calorias al practicarse por 90 minutos
-//	}
+	test "1.3 consulta remo" {
+		assert.equals(520, remarEnElDelta.caloriasQueSeConsumen(5))//remarEnElDelta deberia gastar 520 calorias al practicarse por 5 minutos
+		assert.equals(9360, remarEnElDelta.caloriasQueSeConsumen(90))//remarEnElDelta deberia gastar 9360 calorias al practicarse por 90 minutos
+	}
 
-//	test "1.4 consulta remo competitivo" {
-//		//remarEnCaminoRemeros deberia gastar 510 calorias al practicarse por 5 minutos
-//		//remarEnCaminoRemeros deberia gastar 12750 calorias al practicarse por 90 minutos
-//	}
+	test "1.4 consulta remo competitivo" {
+		assert.equals(510, remarEnCaminoRemeros.caloriasQueSeConsumen(5))//remarEnCaminoRemeros deberia gastar 510 calorias al practicarse por 5 minutos
+		assert.equals(12750, remarEnCaminoRemeros.caloriasQueSeConsumen(90))//remarEnCaminoRemeros deberia gastar 12750 calorias al practicarse por 90 minutos
+	}
+	
+
 
 //Punto 2: Personas
 	//ATENCION: usar el metodo truncate(3) para truncar un numero a 3 decimales
 	// Ej: 1.2345.truncate(3) -> devuelve 1.234 
 	
-//	test '2.1.1 test sedentario running' {
-//		// hacer que calamardo practique correrEnLaPlaya
-//		// el peso de calamardo debería ser 59.948 (truncado a 3 decimales)
-//	} 
+	test '2.1.1 test sedentario running' {
+		calamardo.aplicarRutina(correrEnLaPlaya)// hacer que calamardo practique correrEnLaPlaya
+		assert.equals(59.948, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.948 (truncado a 3 decimales)
+	} 
 	
-//	test '2.1.2 test sedentario maraton' {
-//		// hacer que calamardo practique maratonBA
-//		// el peso de calamardo debería ser 59.871 (truncado a 3 decimales)
-//	} 
+	test '2.1.2 test sedentario maraton' {
+		calamardo.aplicarRutina(maratonBA)// hacer que calamardo practique maratonBA
+		assert.equals(59.871, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.871 (truncado a 3 decimales)
+	} 
 
-//	test '2.1.3 test sedentario remo' {
-//		// hacer que calamardo practique remarEnElDelta
-//		// el peso de calamardo debería ser 59.925 (truncado a 3 decimales)
-//	} 
+	test '2.1.3 test sedentario remo' {
+		calamardo.aplicarRutina(remarEnElDelta)// hacer que calamardo practique remarEnElDelta
+		assert.equals(59.925, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.925 (truncado a 3 decimales)
+	} 
 
-//	test '2.1.3 test sedentario remo competicion' {
-//		// hacer que calamardo practique remarEnCaminoRemeros
-//		// el peso de calamardo debería ser 59.927 (truncado a 3 decimales)
-//	} 
+	test '2.1.3 test sedentario remo competicion' {
+		calamardo.aplicarRutina(remarEnCaminoRemeros)// hacer que calamardo practique remarEnCaminoRemeros
+		assert.equals(59.927, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 59.927 (truncado a 3 decimales)
+	} 
 	
-//	test '2.1.5 test sedentario no puede practicar' {
-//		// Hacer que el peso de calamardo sea 40
-//		// hacer que calamardo practique correrEnLaPlaya (NO SE PUEDE!)
-//		// el peso de calamardo debería ser 40 
-//	} 
-	
-//	test "2.2.1 test atleta running" {
-//		// hacer que bob practique correrEnLaPlaya
-//		// el peso de bob debería ser 39.725 (truncado a 3 decimales)
-//	 }
+	test '2.1.5 test sedentario no puede practicar' {
+		calamardo.peso(40)// Hacer que el peso de calamardo sea 40
+		assert.throwsException({calamardo.aplicarRutina(correrEnLaPlaya)})// hacer que calamardo practique correrEnLaPlaya (NO SE PUEDE!)
+		assert.equals(40, (calamardo.peso()).truncate(3))// el peso de calamardo debería ser 40 
+	} 
 
-//	test "2.2.2 test atleta maraton" {
-//		// hacer que bob practique maratonBA
-//		// el peso de bob debería ser 37.812 (truncado a 3 decimales)
-//	 }
+	test "2.2.1 test atleta running" {
+		bob.aplicarRutina(correrEnLaPlaya)// hacer que bob practique correrEnLaPlaya
+		assert.equals(39.725, (bob.peso()).truncate(3))// el peso de bob debería ser 39.725 (truncado a 3 decimales)
+	}
 
-//	test "2.2.3 test atleta remo" {
-//		// hacer que bob practique remarEnElDelta( NO SE PUEDE!)
-//		// el peso de bob debería ser 40 
-//	}
+	test "2.2.2 test atleta maraton" {
+		bob.aplicarRutina(maratonBA)// hacer que bob practique maratonBA
+		assert.equals(37.812, (bob.peso()).truncate(3))// el peso de bob debería ser 37.812 (truncado a 3 decimales)
+	}
 
-//	test "2.2.3 test atleta remo de competición" {
-//		// hacer que bob practique remarEnCaminoRemeros
-//		// el peso de bob debería ser 39.406
-//	}
-	 
+	test "2.2.3 test atleta remo" {
+		assert.throwsException({bob.aplicarRutina(remarEnElDelta)})// hacer que bob practique remarEnElDelta( NO SE PUEDE!)
+		assert.equals(40, (bob.peso()).truncate(3))// el peso de bob debería ser 40 
+	}
+
+	test "2.2.3 test atleta remo de competición" {
+		bob.aplicarRutina(remarEnCaminoRemeros)// hacer que bob practique remarEnCaminoRemeros
+		assert.equals(39.406, (bob.peso()).truncate(3))// el peso de bob debería ser 39.406
+	}
+
+
+
+
 //punto 3: Consultas
 //	test "3.1 el mejor predio" {
-//		//El mejor predio del clubBarrial para bob debería ser recreo		
-//		//El mejor predio del clubBarrial para calamardo debería ser recreo		
-//	}	
+	test "a" {
+		assert.equals(recreo, clubBarrial.mejorPredioPara(bob))//El mejor predio del clubBarrial para bob debería ser recreo		
+		assert.equals(recreo, clubBarrial.mejorPredioPara(calamardo))//El mejor predio del clubBarrial para calamardo debería ser recreo
+	}	
 	
 //	test "3.2 predios tranquis" {
-//		//No debería haber predios tranquis en el clubBarrial para bob
-//		//Los predios tranquis del clubBarrial para calamardo solo incluyen a recreo  
-//	}
+	test "b" {
+		assert.throwsException({clubBarrial.prediosTranquisPara(bob)})//No debería haber predios tranquis en el clubBarrial para bob
+		assert.equals(recreo, clubBarrial.prediosTranquisPara(calamardo))//Los predios tranquis del clubBarrial para calamardo solo incluyen a recreo  
+	}
 	
 //	test "3.3 rutinas más exigentes" {
-//		//Las rutinas más exigentes del clubBarrial para bob son maratonBA y remarEnCaminoRemeros
-//		//Las rutinas más exigentes del clubBarrial para calamardo son maratonBA y remarEnElDelta
-//	}
-	
+	test "c" {
+		assert.equals(#{maratonBA, remarEnCaminoRemeros}, clubBarrial.rutinasMasExigentesPara(bob))//Las rutinas más exigentes del clubBarrial para bob son maratonBA y remarEnCaminoRemeros
+		assert.equals(#{maratonBA, remarEnElDelta}, clubBarrial.rutinasMasExigentesPara(calamardo))//Las rutinas más exigentes del clubBarrial para calamardo son maratonBA y remarEnElDelta
+	}
 }
